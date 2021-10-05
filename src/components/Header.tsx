@@ -65,6 +65,29 @@ function TopNavRight() {
   );
 }
 
+function BottomNavMenu() {
+  return (
+    <p className="link flex items-center"><MenuIcon className="h-6 mr-1" /> All</p>
+  );
+}
+
+function BottomNav() {
+  return (
+    <div className="flex items-center bg-amazon_blue-light text-sm text-white space-x-3">
+      <BottomNavMenu />
+      <p className="link">Prime Video</p>
+      <p className="link">Amazon Basics</p>
+      <p className="link">Today's Deals</p>
+      <p className="link hidden lg:inline-flex">Electronics</p>
+      <p className="link hidden lg:inline-flex">Food & Grocery</p>
+      <p className="link hidden lg:inline-flex">Prime</p>
+      <p className="link hidden lg:inline-flex">Buy Again</p>
+      <p className="link hidden lg:inline-flex">Shopper Toolkit</p>
+      <p className="link hidden lg:inline-flex">Health & Personal Care</p>
+    </div>
+  );
+}
+
 export function Header() {
   return (
     <header>
@@ -73,6 +96,7 @@ export function Header() {
         <SearchInput />
         <TopNavRight />
       </div>
+      <BottomNav />
     </header>
   );
 }
