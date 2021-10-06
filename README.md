@@ -1,6 +1,7 @@
-# Next.js + Tailwind CSS Example
+# Amazon clone
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v2.2)](https://blog.tailwindcss.com/tailwindcss-2-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+![Screenshot 2021-10-06 at 12 40 25](https://user-images.githubusercontent.com/5389745/136188104-07de047c-cf98-409f-876c-2f6e9df6f477.png)
+![Screenshot 2021-10-06 at 12 41 06](https://user-images.githubusercontent.com/5389745/136188135-bebbd75b-a31a-428e-af6f-ef7fd6ce54ad.png)
 
 It uses the new [`Just-in-Time Mode`](https://tailwindcss.com/docs/just-in-time-mode) for Tailwind CSS.
 
