@@ -1,7 +1,11 @@
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { signIn, signOut } from 'next-auth/client';
 
 export class User {
   signIn() {
     return signIn();
+  }
+
+  signOut() {
+    return signOut();
   }
 }
