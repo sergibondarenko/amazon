@@ -7,6 +7,8 @@
 
 ## Technologies
 
+- Next.js
+- Rect
 - Tailwind CSS
 
 ## Deploy your own
