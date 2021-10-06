@@ -40,12 +40,26 @@ function PrimeBadge({ isPrime }: IPrimeBadgeProps ) {
       <p className="text-xs text-gray-500">FREE Next-day Delivery</p>
     </div>
   );  
-} 
+}
+
+interface IProductPriceProps {
+  price: number;
+  currency: string;
+}
+
+function ProductPrice({ price, currency }: IProductPriceProps) {
+  return (
+    <div className="mb-5">
+      <CurrencyFormatter quantity={price} currency={currency} />
+    </div>
+  );
+}
 
 interface IProductProps extends IProduct {}
 
 function Product({ id, title, price, description, category, image, rating }: IProductProps) {
   const isPrime = !Math.floor(Math.random()*2);
+  const currency = "EUR";
 
   return (
     <div className="relative flex flex-col m-5 bg-white z-30 p-10">
@@ -54,9 +68,7 @@ function Product({ id, title, price, description, category, image, rating }: IPr
       <h4 className="my-3">{title}</h4>
       <ProductRating rating={rating} />
       <p className="text-xs my-2 line-clamp-2">{description}</p>
-      <div className="mb-5">
-        <CurrencyFormatter quantity={price} currency="EUR" />
-      </div>
+      <ProductPrice price={price} currency={currency} />
       <PrimeBadge isPrime={isPrime} />
       <button className="mt-auto button">Add to Basket</button>
     </div>
