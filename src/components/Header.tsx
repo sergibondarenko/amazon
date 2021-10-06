@@ -1,6 +1,7 @@
 import React from 'react';
 import { AmazonLogoImage } from '../components/images';
 import { MenuIcon, SearchIcon, ShoppingCartIcon } from '@heroicons/react/outline'; 
+import { User } from '../services';
 
 function AmazonLogo() {
   return (
@@ -22,8 +23,10 @@ function SearchInput() {
 }
 
 function Account() {
+  const user = new User();
+
   return (
-    <div className="link">
+    <div className="link" onClick={user.signIn}>
       <p>Hello, John Baker!</p>
       <p className="font-extrabold md:text-sm">Account & Lists</p>
     </div>
