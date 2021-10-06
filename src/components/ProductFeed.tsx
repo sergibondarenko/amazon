@@ -20,9 +20,9 @@ function ProductRating({ rating }: IProductStarRatingProps) {
         {[...Array(baseRate)].map((e, i) => <StarIconSolid key={i} className="h-5 text-yellow-500" />)}
         {rateAfterSeparator > 0 && <StarIconOutline className="h-5 text-yellow-500" />}
       </div>
-      <div className="flex flex-row space-x-3">
-        <p className="color text-blue-800">{rating.rate}</p>
-        <p className="color text-blue-800">{rating.count} votes</p>
+      <div className="flex flex-row space-x-2">
+        <p className="color text-sm">{rating.rate}</p>
+        <p className="color text-sm">{rating.count} votes</p>
       </div>
     </div>
   );
@@ -75,6 +75,14 @@ function Product({ id, title, price, description, category, image, rating }: IPr
   );
 }
 
+function SmallMediumBusinessProductsBanner() {
+  return (
+    <div className="md:col-span-full md:mx-5">
+      <Image src={require('../../public/sm_mid_business_products.jpg')} />
+    </div>
+  );
+}
+
 export function ProductFeed() {
   const storeService = new Store();
   const [products, setProducts] = useState([]);
@@ -88,9 +96,15 @@ export function ProductFeed() {
   }
 
   return (
-    <div>
-      <h1>Products ...</h1>
-      {products.map((props) => <Product key={props.id} {...props} />)}
+    <div
+    className="grid grid-flow-row-dense md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:-mt-52 mx-auto"
+    >
+      {products.slice(0, 4).map((props) => <Product key={props.id} {...props} />)}
+      <SmallMediumBusinessProductsBanner />
+      <div className="md:col-span-2">
+        {products.slice(4, 5).map((props) => <Product key={props.id} {...props} />)}
+      </div>
+      {products.slice(5).map((props) => <Product key={props.id} {...props} />)}
     </div>
   );
 }
