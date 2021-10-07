@@ -1,8 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import { IProduct } from '../services/Store';
 
+export interface IBasketItem extends IProduct {
+  _id: string; 
+  isPrime: boolean;
+}
+
 interface IBasketState {
-  items: Array<IProduct>;
+  items: Array<IBasketItem>;
 }
 
 const initialState: IBasketState = {
@@ -14,9 +20,12 @@ export const basketSlice = createSlice({
   name: 'basket',
   reducers: {
     addToBasket: (state, action) => {
-      state.items = [...state.items, action.payload];
+      state.items = [...state.items, { ...action.payload, _id: uuidv4() }];
     },
-    removeFromBasket: (state, action) => {}
+    removeFromBasket: (state, action) => {
+      const id = action.payload;
+      state.items = state.items.filter((item) => item._id !== id);
+    }
   }
 });
 

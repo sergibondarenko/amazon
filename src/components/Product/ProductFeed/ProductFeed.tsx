@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
-import { addToBasket } from '../../state/basket_slice';
-import { Store, IProduct } from '../../services/Store';
-import { ProductRating } from './ProductRating';
-import { PrimeBadge } from './PrimeBadge';
-import { ProductPrice } from './ProductPrice';
+import { addToBasket } from '../../../state/basket_slice';
+import { Store, IProduct } from '../../../services/Store';
+import { ProductRating } from '../ProductRating';
+import { PrimeBadge } from '../PrimeBadge';
+import { ProductPrice } from '../ProductPrice';
 
 interface IProductProps extends IProduct {}
 
@@ -16,7 +16,7 @@ function Product({ id, title, price, description, category, image, rating }: IPr
 
   function handleAddProductToBasket() {
     dispatch(addToBasket({
-      id, title, price, description, category, image, rating
+      id, title, price, description, category, image, rating, isPrime
     }));
   }
 
@@ -27,8 +27,12 @@ function Product({ id, title, price, description, category, image, rating }: IPr
       <h4 className="my-3">{title}</h4>
       <ProductRating rating={rating} />
       <p className="text-xs my-2 line-clamp-2">{description}</p>
-      <ProductPrice price={price} currency={currency} />
-      <PrimeBadge isPrime={isPrime} />
+      <div className="mb-5">
+        <ProductPrice price={price} currency={currency} />
+      </div>
+      <div className="-mt-4 my-3">
+        <PrimeBadge isPrime={isPrime} />
+      </div>
       <button onClick={handleAddProductToBasket} className="mt-auto button">Add to Basket</button>
     </div>
   );

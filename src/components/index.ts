@@ -1,3 +1,3 @@
-export { Header } from './Header/Header';
+export { Header } from './Header';
 export { Banner } from './Banner';
-export { ProductFeed } from './ProductFeed/ProductFeed';
+export { ProductFeed, CheckoutProduct } from './Product';

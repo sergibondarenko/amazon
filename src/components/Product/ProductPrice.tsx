@@ -8,8 +8,6 @@ interface IProductPriceProps {
 
 export function ProductPrice({ price, currency }: IProductPriceProps) {
   return (
-    <div className="mb-5">
-      <CurrencyFormatter quantity={price} currency={currency} />
-    </div>
+    <CurrencyFormatter quantity={price} currency={currency} />
   );
 }

@@ -8,7 +8,7 @@ interface IPrimeBadgeProps {
 export function PrimeBadge({ isPrime }: IPrimeBadgeProps ) {
   if (!isPrime) return null;
   return (
-    <div className="flex items-center space-x-2 -mt-4 my-3">
+    <div className="flex items-center space-x-2">
       <PrimeLogoImage className="cursor-pointer" width={60} height={20} />
       <p className="text-xs text-gray-500">FREE Next-day Delivery</p>
     </div>
