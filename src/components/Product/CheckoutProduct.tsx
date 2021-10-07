@@ -19,7 +19,7 @@ export function CheckoutProduct({ product }: ICheckoutProductProps) {
   }
 
   function handleRemoveItemFromBasket() {
-    dispatch(removeFromBasket(product._id));
+    dispatch(removeFromBasket(product.id));
   }
 
   return (

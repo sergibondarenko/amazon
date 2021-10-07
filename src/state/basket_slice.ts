@@ -20,11 +20,11 @@ export const basketSlice = createSlice({
   name: 'basket',
   reducers: {
     addToBasket: (state, action) => {
-      state.items = [...state.items, { ...action.payload, _id: uuidv4() }];
+      state.items = [...state.items, { ...action.payload, id: uuidv4() }];
     },
     removeFromBasket: (state, action) => {
       const id = action.payload;
-      state.items = state.items.filter((item) => item._id !== id);
+      state.items = state.items.filter((item) => item.id !== id);
     }
   }
 });
