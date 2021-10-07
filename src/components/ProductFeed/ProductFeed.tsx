@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useDispatch } from 'react-redux';
+import { addToBasket } from '../../state/basket_slice';
 import { Store, IProduct } from '../../services/Store';
 import { ProductRating } from './ProductRating';
 import { PrimeBadge } from './PrimeBadge';
@@ -8,8 +10,15 @@ import { ProductPrice } from './ProductPrice';
 interface IProductProps extends IProduct {}
 
 function Product({ id, title, price, description, category, image, rating }: IProductProps) {
+  const dispatch = useDispatch();
   const isPrime = !Math.floor(Math.random()*2);
   const currency = "EUR";
+
+  function handleAddProductToBasket() {
+    dispatch(addToBasket({
+      id, title, price, description, category, image, rating
+    }));
+  }
 
   return (
     <div className="relative flex flex-col m-5 bg-white z-30 p-10">
@@ -20,7 +29,7 @@ function Product({ id, title, price, description, category, image, rating }: IPr
       <p className="text-xs my-2 line-clamp-2">{description}</p>
       <ProductPrice price={price} currency={currency} />
       <PrimeBadge isPrime={isPrime} />
-      <button className="mt-auto button">Add to Basket</button>
+      <button onClick={handleAddProductToBasket} className="mt-auto button">Add to Basket</button>
     </div>
   );
 }
@@ -28,7 +37,7 @@ function Product({ id, title, price, description, category, image, rating }: IPr
 function SmallMediumBusinessProductsBanner() {
   return (
     <div className="md:col-span-full md:mx-5">
-      <Image src={require('../../../public/sm_mid_business_products_banner.jpg')} />
+      <Image src={require('./sm_mid_business_products_banner.jpg')} />
     </div>
   );
 }
