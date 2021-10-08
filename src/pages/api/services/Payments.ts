@@ -1,6 +1,8 @@
-const paymentProcessor = require('stripe')(process.env.AMAZON_APP_STRIPE_SECRET_KEY);
 import { IProduct } from './Store'; 
 import { ICurrency } from '../../../services/Payments';
+import type { NextApiRequest } from 'next'
+const paymentProcessor = require('stripe')(process.env.AMAZON_APP_STRIPE_SECRET_KEY);
+const endpointSigningSecret = process.env.AMAZON_APP_STRIPE_SIGNING_SECRET;
 
 export interface ICheckoutProduct {
   description: string;
@@ -34,9 +36,10 @@ function productsToCheckoutProducts(products: IProduct[], currency: ICurrency) {
 
 export interface IPayments {
   doCheckout: ({ products, currency, email }: { products: IProduct[], currency: ICurrency, email: string }) => Promise<object>;
+  getSessionForWebhook: ({ payload, reqHeaders }: { payload: string, reqHeaders: object }) => object | null;
 }
 
-export class Payments {
+export class Payments implements IPayments {
   private paymentProcessor;
 
   constructor() {
@@ -62,5 +65,23 @@ export class Payments {
       cancel_url: process.env.AMAZON_APP_HOST + '/checkout',
       metadata: { email, images: JSON.stringify(products.map((p) => p.image)) }
     });
+  }
+
+  getSessionForWebhook({ payload, reqHeaders }: { payload: string, reqHeaders: object }) {
+    let event;
+
+    try {
+      const signature = reqHeaders['stripe-signature'];
+      event = this.paymentProcessor.webhooks.constructEvent(payload, signature, endpointSigningSecret);
+    } catch (err) {
+      console.error('getSessionForWebhook', err);
+      return null;
+    }
+
+    if (event.type === 'checkout.session.completed') {
+      return event?.data?.object || null;     
+    }
+
+    return null;
   }
 }
