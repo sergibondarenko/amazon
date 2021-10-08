@@ -9,12 +9,13 @@
 - [Next.js](https://nextjs.org/)
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- Authentication OAuth 2.0 via [Google Firebase](https://firebase.google.com/) and [NextAuth.js](https://next-auth.js.org/)
+- Authentication OAuth 2.0 via [Google API](https://console.cloud.google.com/apis/credentials) and [NextAuth.js](https://next-auth.js.org/)
 - Payments via [Stripe](https://stripe.com/en-gb-it)
+- Data storage via [Google Firebase](https://firebase.google.com/)
 
 ## Deploy
 
-Deploy the example using [Vercel](https://vercel.com/sergibondarenko/amazon).
+Deploy using [Vercel](https://vercel.com/sergibondarenko/amazon).
 
 ## How to use
 
@@ -43,15 +44,21 @@ AMAZON_APP_FIREBASE_AUTH_CLIENT_ID=1
 AMAZON_APP_FIREBASE_AUTH_CLIENT_SECRET=1
 AMAZON_APP_NEXTAUTH_URL=http://localhost:3000
 
+## Admin permissions
+AMAZON_APP_FIREBASE_ADMIN_PROJECT_ID=1
+AMAZON_APP_FIREBASE_ADMIN_PRIVATE_KEY_ID=1
+AMAZON_APP_FIREBASE_ADMIN_PRIVATE_KEY=1
+AMAZON_APP_FIREBASE_ADMIN_CLIENT_EMAIL=1
+AMAZON_APP_FIREBASE_ADMIN_CLIENT_ID=1
+AMAZON_APP_FIREBASE_ADMIN_CLIENT_X509_CERT_URL=1
+
 # Payment
 
 ## Stripe
-
 AMAZON_APP_STRIPE_PUBLIC_KEY=1
 AMAZON_APP_STRIPE_SECRET_KEY=1
 
 ## Stripe CLI
-
 AMAZON_APP_STRIPE_SIGNING_SECRET=1
 
 AMAZON_APP_HOST=http://localhost:3000
@@ -63,3 +70,23 @@ You can configure the credentials via the [Google Cloud Platform](https://consol
 In the dev mode, the OAuth Client ID must be configured in the following way:
 - Add http://localhost:3000 to Authorized JavaScript Origins
 - Add http://localhost:3000/api/auth/callback/google to Authorized redirect URIs
+- Add the new Vercel build auto-generated domain to make the authentication work there
+
+### Stripe CLI
+
+`stripe login`
+
+Logins to Stripe. It is required to access the Stripe webhooks to store the orders in the Firebase database.
+
+`stripe listen --forward-to localhost:3000/api/webhook`
+
+Creates the Stripe webhook emulator in the dev environment. The command must product the webhook signing secret.\
+You must put the secret as a value for AMAZON_APP_STRIPE_SIGNING_SECRET in .env.local.
+
+## Testing
+
+### Fake card
+
+4242 4242 4242 4242\
+04/24\
+424

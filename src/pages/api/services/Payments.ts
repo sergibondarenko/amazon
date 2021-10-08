@@ -46,7 +46,7 @@ export class Payments {
   doCheckout({ products, currency, email }: { products: IProduct[], currency: ICurrency, email: string }) {
     const _products: ICheckoutProduct[] = productsToCheckoutProducts(products, currency);
 
-    return paymentProcessor.checkout.sessions.create({
+    return this.paymentProcessor.checkout.sessions.create({
       payment_method_types: ['card'],
       shipping_rates: ['shr_1JiFCbKDkxRHfusriQfSNa97'],
       shipping_address_collection: {
