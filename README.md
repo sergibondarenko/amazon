@@ -10,6 +10,7 @@
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - Authentication OAuth 2.0 via [Google Firebase](https://firebase.google.com/) and [NextAuth.js](https://next-auth.js.org/)
+- Payments via [Stripe](https://stripe.com/en-gb-it)
 
 ## Deploy
 
