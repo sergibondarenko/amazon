@@ -26,7 +26,8 @@ Starts the dev server.
 
 ### Environment variables
 Put the following configuration in the .env.local in the root folder of the app.\
-Substitute 1 with the real credentials that you can see in the [Firebase console](https://console.firebase.google.com/project/clone-fa29b/overview) and Stripe.
+Substitute 1 with the real credentials that you can see in the [Firebase console](https://console.firebase.google.com/project/clone-fa29b/overview) \
+and [Stripe](https://dashboard.stripe.com/test/dashboard).
 
 ```
 # Firebase

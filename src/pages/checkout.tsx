@@ -2,9 +2,10 @@ import React from 'react';
 import { Header } from '../components';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
-import { selectItems, selectTotalPrice } from '../state/basket_slice';
+import { selectCurrency, selectItems, selectTotalPrice } from '../state/basket_slice';
 import { CheckoutProduct, ProductPrice } from '../components';
 import { useSession } from 'next-auth/client';
+import { Payments } from '../services';
 
 function PrimeDayBanner() {
   return (
@@ -19,13 +20,15 @@ function PrimeDayBanner() {
 
 interface ICheckoutButtonProps {
   isDisabled: boolean;
+  onClick: () => void;
 }
 
-function CheckoutButton({ isDisabled }: ICheckoutButtonProps) {
+function CheckoutButton({ isDisabled, onClick }: ICheckoutButtonProps) {
   const checkoutBtnText = isDisabled ? 'Sign in to checkout' : 'Proceed to checkout'; 
 
   return (
     <button
+      onClick={onClick}
       disabled={isDisabled}
       className={`button mt-2 ${isDisabled
         && 'from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed'}`}
@@ -36,10 +39,16 @@ function CheckoutButton({ isDisabled }: ICheckoutButtonProps) {
 }
 
 export default function Checkout() {
+  const paymentsService = new Payments();
   const [authSession] = useSession();
   const items = useSelector(selectItems);
   const totalPrice = useSelector(selectTotalPrice);
+  const currency = useSelector(selectCurrency);
   const titleText = !items.length ? 'Your Amazon Basket is empty!' : 'Shopping Basket';
+
+  function handleCheckoutClick() {
+    paymentsService.doCheckout({ products: items, currency, email: authSession.user.email });
+  }
 
   function renderItems() {
     return items.map((item, i) => <CheckoutProduct key={i} product={item} />);
@@ -52,10 +61,10 @@ export default function Checkout() {
       <>
         <h2 className="whitespace-nowrap">Subtotal ({items.length} items):{" "}
           <span className="font-bold">
-            <ProductPrice price={totalPrice} currency="EUR" />
+            <ProductPrice price={totalPrice} currency={currency} />
           </span>
         </h2>
-        <CheckoutButton isDisabled={!authSession} />
+        <CheckoutButton isDisabled={!authSession} onClick={handleCheckoutClick} />
       </>
     );
   }

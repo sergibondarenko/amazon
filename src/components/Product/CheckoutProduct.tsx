@@ -1,10 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ProductRating } from './ProductRating';
 import { ProductPrice } from './ProductPrice';
 import { PrimeBadge } from './PrimeBadge';
-import { IBasketItem } from '../../state/basket_slice';
+import { IBasketItem, selectCurrency } from '../../state/basket_slice';
 import { addToBasket, removeFromBasket } from '../../state/basket_slice';
 
 interface ICheckoutProductProps {
@@ -13,6 +13,7 @@ interface ICheckoutProductProps {
 
 export function CheckoutProduct({ product }: ICheckoutProductProps) {
   const dispatch = useDispatch();
+  const currency = useSelector(selectCurrency);
 
   function handleAddItemToBasket() {
     dispatch(addToBasket(product))
@@ -30,7 +31,7 @@ export function CheckoutProduct({ product }: ICheckoutProductProps) {
         <p>{product.title}</p>
         <ProductRating rating={product.rating} />
         <p className="text-xs my-2 line-clamp-3">{product.description}</p>
-        <ProductPrice price={product.price} currency="EUR" />
+        <ProductPrice price={product.price} currency={currency} />
         <div className="mt-2">
           <PrimeBadge isPrime={product.isPrime} />
         </div>

@@ -1,3 +1,4 @@
+import { HttpClient, IHttpClient } from './HttpClient';
 
 export interface IProductRating {
   rate: number;
@@ -14,9 +15,18 @@ export interface IProduct {
   rating: IProductRating;
 }
 
-export class Store {
+export interface IStore {
+  getProducts: () => Promise<IProduct[]>;
+}
+
+export class Store implements IStore {
+  private httpClient: IHttpClient;
+
+  constructor() {
+    this.httpClient = new HttpClient();
+  }
+
   getProducts() {
-    return fetch('https://fakestoreapi.com/products')
-      .then((res) => res.json());
+    return this.httpClient.get({ path: 'https://fakestoreapi.com/products' }) as Promise<IProduct[]>;
   }
 }

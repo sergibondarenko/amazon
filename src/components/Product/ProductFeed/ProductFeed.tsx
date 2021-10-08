@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useDispatch } from 'react-redux';
-import { addToBasket } from '../../../state/basket_slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToBasket, selectCurrency } from '../../../state/basket_slice';
 import { Store, IProduct } from '../../../services/Store';
 import { ProductRating } from '../ProductRating';
 import { PrimeBadge } from '../PrimeBadge';
@@ -11,8 +11,8 @@ interface IProductProps extends IProduct {}
 
 function Product({ id, title, price, description, category, image, rating }: IProductProps) {
   const dispatch = useDispatch();
+  const currency = useSelector(selectCurrency); 
   const isPrime = !Math.floor(Math.random()*2);
-  const currency = "EUR";
 
   function handleAddProductToBasket() {
     dispatch(addToBasket({
