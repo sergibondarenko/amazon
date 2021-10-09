@@ -34,8 +34,8 @@ function productsToCheckoutProducts(products: IProduct[], currency: ICurrency) {
 }
 
 export interface IPayments {
-  doCheckout: ({ products, currency, email }: { products: IProduct[], currency: ICurrency, email: string }) => Promise<object>;
-  getSessionForWebhook: ({ payload, reqHeaders }: { payload: string, reqHeaders: object }) => object | null;
+  doCheckout: ({ products, currency, email }: { products: IProduct[], currency: ICurrency, email: string }) => Promise<any>;
+  getSessionForWebhook: ({ payload, reqHeaders }: { payload: string, reqHeaders: object }) => any;
   getOrder: (id: string) => Promise<any>;
 }
 

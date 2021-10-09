@@ -2,11 +2,11 @@ import { db } from '../../firebase';
 import { collection, getDocs, query } from 'firebase/firestore';
 
 export interface IStorageOrder {
+  id: string;
   amount: number;
   amountShipping: number;
   images: string[],
   timestamp: number,
-  items?: any;
 }
 
 export interface IStorage {
@@ -14,14 +14,14 @@ export interface IStorage {
 }
 
 export class Storage implements IStorage {
-  async getOrders({ email }: { email: string }) {
+  async getOrders({ email }: { email: string }): Promise<IStorageOrder[]> {
     try {
       let q = query(collection(db, `users/${email}/orders`));
       let qSnapshot = await getDocs(q);
 
       const orders = [];
 
-      qSnapshot.forEach(async (doc) => {
+      qSnapshot.forEach((doc) => {
         const data = doc.data();
         orders.push({
           id: doc.id,

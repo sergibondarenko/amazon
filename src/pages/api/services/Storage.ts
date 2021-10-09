@@ -1,24 +1,25 @@
-import * as storageAdmin from 'firebase-admin';
-import storageAdminCredentials from '../../../../firebase_admin_permissions';
-
-function normalizeStorageCredentials(credentials) {
-  return {
-    ...credentials,
-    private_key: credentials.private_key.replace(/\\n/g, '\n')
-  }
-}
-
-function getStorageAdminClient() {
-  return !storageAdmin.apps.length
-    ? storageAdmin.initializeApp({
-      credential: storageAdmin.credential.cert(normalizeStorageCredentials(storageAdminCredentials))
-    })
-    : storageAdmin.app();
-}
-
-function getTimestamp() {
-  return storageAdmin.firestore.FieldValue.serverTimestamp();
-}
+import { adminClient, getTimestamp } from '../../../../firebase_admin';
+// import * as storageAdmin from 'firebase-admin';
+// import storageAdminCredentials from '../../../../firebase_admin';
+// 
+// function normalizeStorageCredentials(credentials) {
+//   return {
+//     ...credentials,
+//     private_key: credentials.private_key.replace(/\\n/g, '\n')
+//   }
+// }
+// 
+// function getStorageAdminClient() {
+//   return !storageAdmin.apps.length
+//     ? storageAdmin.initializeApp({
+//       credential: storageAdmin.credential.cert(normalizeStorageCredentials(storageAdminCredentials))
+//     })
+//     : storageAdmin.app();
+// }
+// 
+// function getTimestamp() {
+//   return storageAdmin.firestore.FieldValue.serverTimestamp();
+// }
 
 export interface IStoredOrder {
   id: string;
@@ -36,7 +37,7 @@ export class Storage implements IStorage {
   private adminClient;
 
   constructor() {
-    this.adminClient = getStorageAdminClient();
+    this.adminClient = adminClient;
   }
 
   putOrder(order: IStoredOrder) {
@@ -52,20 +53,5 @@ export class Storage implements IStorage {
         images: JSON.parse(order.images),
         timestamp: getTimestamp()
       }); 
-  }
-
-  async getOrders({ email }) {
-    console.log('email', email);
-    const sfRef = this.adminClient.firestore().collection('users').doc(email);
-    const collections = await sfRef.listCollections();
-    collections.forEach(collection => {
-      console.log('Found subcollection with id:', collection.id);
-    });
-    // return this.adminClient.firestore()
-    //   .collection('users')
-    //   .doc(email)
-    //   .collection('orders')
-    //   .orderBy('timestamp', 'desc')
-    //   .get();
   }
 }
