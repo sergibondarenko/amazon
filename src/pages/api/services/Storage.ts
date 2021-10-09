@@ -40,7 +40,8 @@ export class Storage implements IStorage {
   }
 
   putOrder(order: IStoredOrder) {
-    return this.adminClient.firestore()
+    return this.adminClient
+      .firestore()
       .collection('users')
       .doc(order.email)
       .collection('orders')
@@ -51,5 +52,20 @@ export class Storage implements IStorage {
         images: JSON.parse(order.images),
         timestamp: getTimestamp()
       }); 
+  }
+
+  async getOrders({ email }) {
+    console.log('email', email);
+    const sfRef = this.adminClient.firestore().collection('users').doc(email);
+    const collections = await sfRef.listCollections();
+    collections.forEach(collection => {
+      console.log('Found subcollection with id:', collection.id);
+    });
+    // return this.adminClient.firestore()
+    //   .collection('users')
+    //   .doc(email)
+    //   .collection('orders')
+    //   .orderBy('timestamp', 'desc')
+    //   .get();
   }
 }

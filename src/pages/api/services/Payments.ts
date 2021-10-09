@@ -1,6 +1,5 @@
 import { IProduct } from './Store'; 
 import { ICurrency } from '../../../services/Payments';
-import type { NextApiRequest } from 'next'
 const paymentProcessor = require('stripe')(process.env.AMAZON_APP_STRIPE_SECRET_KEY);
 const endpointSigningSecret = process.env.AMAZON_APP_STRIPE_SIGNING_SECRET;
 
@@ -37,6 +36,7 @@ function productsToCheckoutProducts(products: IProduct[], currency: ICurrency) {
 export interface IPayments {
   doCheckout: ({ products, currency, email }: { products: IProduct[], currency: ICurrency, email: string }) => Promise<object>;
   getSessionForWebhook: ({ payload, reqHeaders }: { payload: string, reqHeaders: object }) => object | null;
+  getOrder: (id: string) => Promise<any>;
 }
 
 export class Payments implements IPayments {
@@ -83,5 +83,9 @@ export class Payments implements IPayments {
     }
 
     return null;
+  }
+
+  getOrder(id: string) {
+    return this.paymentProcessor.checkout.sessions.listLineItems(id, { limit: 100 });
   }
 }
