@@ -59,8 +59,6 @@ AMAZON_APP_FIREBASE_ADMIN_CLIENT_X509_CERT_URL=1
 ## Stripe
 AMAZON_APP_STRIPE_PUBLIC_KEY=1
 AMAZON_APP_STRIPE_SECRET_KEY=1
-
-## Stripe CLI
 AMAZON_APP_STRIPE_SIGNING_SECRET=1
 
 AMAZON_APP_HOST=http://localhost:3000
@@ -74,7 +72,13 @@ In the dev mode, the OAuth Client ID must be configured in the following way:
 - Add http://localhost:3000/api/auth/callback/google to Authorized redirect URIs
 - Add the new Vercel build auto-generated domain to make the authentication work there
 
-### Stripe CLI
+
+### Payment (Stripe)
+
+Create new account, collect the keys and create the webhook endpoint at [stripe.com](https://dashboard.stripe.com/test/webhooks).\
+The webhook endpoint gives you a signing secret. Assign it to the AMAZON_APP_STRIPE_SIGNING_SECRET environment variable.
+
+#### Stripe CLI
 
 `stripe login`
 
@@ -84,6 +88,7 @@ Logins to Stripe. It is required to access the Stripe webhooks to store the orde
 
 Creates the Stripe webhook emulator in the dev environment. The command must product the webhook signing secret.\
 You must put the secret as a value for AMAZON_APP_STRIPE_SIGNING_SECRET in .env.local.
+
 
 ## Testing
 
