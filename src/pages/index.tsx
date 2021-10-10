@@ -1,5 +1,12 @@
 import Head from 'next/head';
+import { getSession } from 'next-auth/client';
 import { Header, Banner, ProductFeed } from '../components';
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  return { props: { session } };
+}
 
 export default function Home() {
   return (
