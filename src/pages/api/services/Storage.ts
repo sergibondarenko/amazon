@@ -1,25 +1,4 @@
 import { adminClient, getTimestamp } from '../../../../firebase_admin';
-// import * as storageAdmin from 'firebase-admin';
-// import storageAdminCredentials from '../../../../firebase_admin';
-// 
-// function normalizeStorageCredentials(credentials) {
-//   return {
-//     ...credentials,
-//     private_key: credentials.private_key.replace(/\\n/g, '\n')
-//   }
-// }
-// 
-// function getStorageAdminClient() {
-//   return !storageAdmin.apps.length
-//     ? storageAdmin.initializeApp({
-//       credential: storageAdmin.credential.cert(normalizeStorageCredentials(storageAdminCredentials))
-//     })
-//     : storageAdmin.app();
-// }
-// 
-// function getTimestamp() {
-//   return storageAdmin.firestore.FieldValue.serverTimestamp();
-// }
 
 export interface IStoredOrder {
   id: string;

@@ -1,8 +1,11 @@
 import React from 'react';
 import { getSession, useSession } from 'next-auth/client';
-import { Header } from '../components';
-import { Storage } from '../services';
+import moment from 'moment';
+import { Header, ProductPrice } from '../components';
+import { Storage, IStorageOrder } from '../services';
 import { Payments } from './api/services';
+import { useSelector } from 'react-redux';
+import { selectCurrency } from '../state/basket_slice';
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -25,13 +28,58 @@ export async function getServerSideProps(context) {
   return { props: { orders } };
 }
 
-// Stopped at 2:21
-export default function Orders({ orders }) {
+function orderTime(ms: number) {
+  return moment.unix(ms).format('DD MMM YYYY');
+}
+
+interface IOrderProps {
+  order: IStorageOrder;
+}
+
+function Order({ order }: IOrderProps) {
+  const currency = useSelector(selectCurrency);
+
+  return (
+    <div className="relative border rounded-md">
+      <div className="flex items-center space-x-10 p-5 bg-gray-100 text-sm text-gray">
+        <div>
+          <p className="font-bold text-xs">ORDER PLACED</p>
+          <p>{orderTime(order.timestamp)}</p>
+        </div>
+
+        <div>
+          <p className="text-xs font-bold">TOTAL</p>
+          <ProductPrice price={order.amount} currency={currency} /> - Next Day Delivery{" "}
+          <ProductPrice price={order.amountShipping} currency={currency} />
+        </div>
+
+        <p className="text-sm whitespace-nowrap sm:text-xl
+          self-end flex-1 text-right text-blue-500">{order.items.length} items</p>
+
+        <p className="absolute top-2 right-2 w-40 lg:w-72
+          truncate text-xs whitespace-nowrap">ORDER # {order.id}</p>
+      </div>
+
+      <div className="p-5 sm:p-10">
+        <div className="flex space-x-6 overflow-x-auto">
+          {order.images.map((image) => {
+            return <img src={image} alt="" className="h-20 object-contain sm:h-32" />
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface IOrdersProps {
+  orders: IStorageOrder[];
+}
+
+export default function Orders({ orders }: IOrdersProps) {
   const [session] = useSession();
-  console.log('orders', orders);
   
   const subTitle = session
-    ? <h2>X Orders</h2>
+    ? <h2>{orders.length} Orders</h2>
     : <h2>Please sign in to see your orders</h2>;
 
   return (
@@ -43,6 +91,7 @@ export default function Orders({ orders }) {
         {subTitle}
         
         <div className="mt-5 space-y-4">
+          {orders?.map((order) => <Order key={order.id} order={order} />)}
         </div>
       </main>
     </div>

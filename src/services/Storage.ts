@@ -7,6 +7,7 @@ export interface IStorageOrder {
   amountShipping: number;
   images: string[],
   timestamp: number,
+  items?: any;
 }
 
 export interface IStorage {
