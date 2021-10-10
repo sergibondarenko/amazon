@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
     })
   );
 
-  return { props: { orders } };
+  return { props: { orders, session } };
 }
 
 function orderTime(ms: number) {
@@ -62,8 +62,8 @@ function Order({ order }: IOrderProps) {
 
       <div className="p-5 sm:p-10">
         <div className="flex space-x-6 overflow-x-auto">
-          {order.images.map((image) => {
-            return <img src={image} alt="" className="h-20 object-contain sm:h-32" />
+          {order.images.map((image, i) => {
+            return <span key={i}><img src={image} alt="" className="h-20 object-contain sm:h-32" /></span>
           })}
         </div>
       </div>

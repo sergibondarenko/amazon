@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { selectCurrency, selectItems, selectTotalPrice } from '../state/basket_slice';
 import { CheckoutProduct, ProductPrice } from '../components';
-import { useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 import { Payments } from '../services';
 
 function PrimeDayBanner() {
@@ -36,6 +36,12 @@ function CheckoutButton({ isDisabled, onClick }: ICheckoutButtonProps) {
       {checkoutBtnText}
     </button>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  return { props: { session } };
 }
 
 export default function Checkout() {
