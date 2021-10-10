@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 export interface IStorageOrder {
   id: string;
@@ -17,7 +17,7 @@ export interface IStorage {
 export class Storage implements IStorage {
   async getOrders({ email }: { email: string }): Promise<IStorageOrder[]> {
     try {
-      let q = query(collection(db, `users/${email}/orders`));
+      let q = query(collection(db, `users/${email}/orders`), orderBy('timestamp', 'desc'));
       let qSnapshot = await getDocs(q);
 
       const orders = [];
