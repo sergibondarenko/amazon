@@ -48,6 +48,8 @@ export class Payments implements IPayments {
 
   doCheckout({ products, currency, email }: { products: IProduct[], currency: ICurrency, email: string }) {
     const _products: ICheckoutProduct[] = productsToCheckoutProducts(products, currency);
+    console.debug('Payments, doCheckout, products, _products', products, _products);
+    const images = JSON.stringify(products.map((p) => p.image));
 
     return this.paymentProcessor.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -63,21 +65,24 @@ export class Payments implements IPayments {
       mode: 'payment',
       success_url: process.env.AMAZON_APP_HOST + '/success',
       cancel_url: process.env.AMAZON_APP_HOST + '/checkout',
-      metadata: { email, images: JSON.stringify(products.map((p) => p.image)) }
+      metadata: { email, images }
     });
   }
 
   getSessionForWebhook({ payload, reqHeaders }: { payload: string, reqHeaders: object }) {
+    console.debug('Payments, getSessionForWebhook, payload, reqHeaders', payload, reqHeaders);
+    console.debug('Payments, getSessionForWebhook, endpointSigningSecret', endpointSigningSecret);
     let event;
 
     try {
       const signature = reqHeaders['stripe-signature'];
       event = this.paymentProcessor.webhooks.constructEvent(payload, signature, endpointSigningSecret);
     } catch (err) {
-      console.error('getSessionForWebhook', err);
+      console.error('Payments, getSessionForWebhook', err);
       return null;
     }
 
+    console.debug('Payments, getSessionForWebhook, event', event);
     if (event.type === 'checkout.session.completed') {
       return event?.data?.object || null;     
     }

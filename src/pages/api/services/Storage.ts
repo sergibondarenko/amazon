@@ -20,6 +20,8 @@ export class Storage implements IStorage {
   }
 
   putOrder(order: IStoredOrder) {
+    console.debug('Storage, putOrder, order', order);
+
     return this.adminClient
       .firestore()
       .collection('users')

@@ -16,6 +16,8 @@ export interface IStorage {
 
 export class Storage implements IStorage {
   async getOrders({ email }: { email: string }): Promise<IStorageOrder[]> {
+    console.debug('Storage, getOrders, email', email);
+
     try {
       let q = query(collection(db, `users/${email}/orders`), orderBy('timestamp', 'desc'));
       let qSnapshot = await getDocs(q);
@@ -33,6 +35,7 @@ export class Storage implements IStorage {
         });
       });
 
+      console.debug('Storage, getOrders, orders', orders);
       return orders;
     } catch (err) {
       console.error('Fail to get orders.', err);

@@ -49,6 +49,7 @@ function SmallMediumBusinessProductsBanner() {
 export function ProductFeed() {
   const storeService = new Store();
   const [products, setProducts] = useState([]);
+  console.debug('ProductFeed, products', products);
 
   useEffect(() => {
     fetchData();

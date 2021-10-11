@@ -32,6 +32,8 @@ export class Payments implements IPayments {
   }
 
   async doCheckout({ products, currency, email }: { products: IProduct[], currency: ICurrency, email: string }) {
+    console.debug('Payments, doCheckout, products, currency, email', products, currency, email);
+  
     try {
       const checkoutSession = await this.httpClient.post({
         path: '/api/checkout', data: { products, currency, email }
